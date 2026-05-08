@@ -1,3 +1,11 @@
+# i want to create a test ci cd popeline for a simple python application github actions
+# the pipeline will have the following stages: 
+# 1. Build
+# 2. Test
+# 3. Deploy
+# the pipeline will be triggered on every push to the main branch
+# after completion of deplyment store the artifacts in azure storage account
+# add command on each everyline to print the current stage of the pipeline
 name: Python Application Pipeline
 on:
   push:
@@ -17,7 +25,6 @@ jobs:
         run: |
           echo "Installing dependencies..."
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
       - name: Build application
         run: |
           echo "Building the application..."
