@@ -1,16 +1,18 @@
-#crate an end to end pipeline for a simple python application
-#the pipeline will have the following stages:
+# i want to create a test ci cd popeline for a simple python application github actions
+# the pipeline will have the following stages: 
 # 1. Build
 # 2. Test
-# 3. Deploy 
-#the pipeline will be triggered on every push to the main branch
+# 3. Deploy
+# the pipeline will be triggered on every push to the main branch
+# after completion of deplyment store the artifacts in azure storage account
+# add command on each everyline to print the current stage of the pipeline
 name: Python Application Pipeline
 on:
   push:
     branches:
-      - main  
+      - main
 jobs:
-  build:    
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,6 +23,7 @@ jobs:
           python-version: '3.x'
       - name: Install dependencies
         run: |
+          echo "Installing dependencies..."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build application
@@ -28,10 +31,9 @@ jobs:
           echo "Building the application..."
           # Add build commands here
   test:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     needs: build
-    steps:  
-
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set up Python
@@ -40,14 +42,15 @@ jobs:
           python-version: '3.x'
       - name: Install dependencies
         run: |
+          echo "Installing dependencies..."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run tests
         run: |
           echo "Running tests..."
-          # Add test commands here  
+          # Add test commands here      
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     needs: test
     steps:
       - name: Checkout code
@@ -56,12 +59,7 @@ jobs:
         run: |
           echo "Deploying the application..."
           # Add deploy commands here
-
-     # after completion of deplyment store the artifacts in azure storage account
-      - name: Upload artifact to Azure Storage
-        uses: azure/storage-blob-upload@v1
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          container-name: my-container
-          source: ./path/to/artifact
-          destination: artifact.zip             
+      - name: Store artifacts in Azure Storage Account
+        run: |
+          echo "Storing artifacts in Azure Storage Account..."
+          # Add commands to store artifacts in Azure Storage Account here
